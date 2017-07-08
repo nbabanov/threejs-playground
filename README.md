@@ -1,5 +1,5 @@
-ThreeJS playground
-------
+# ThreeJS playground
+
 
 ## Technologies used
 1. ThreeJS
