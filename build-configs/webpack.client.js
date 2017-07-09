@@ -31,8 +31,8 @@ let config = {
                 loader: `file-loader?name=assets/[name]-[hash].[ext]`
             },
             {
-                test: /\.scss$/,
-                loader: ExtractTextPlugin.extract('css-loader!postcss-loader!sass-loader'),
+                test: /\.css$/,
+                loader: ExtractTextPlugin.extract('css-loader!postcss-loader'),
                 include: path.resolve(`${Constants.SOURCE_PATH}styles`)
             },
         ]
@@ -53,11 +53,6 @@ let config = {
         }),
         new webpack.LoaderOptionsPlugin({
             options: {
-                sassLoader: {
-                    outputStyle: 'compressed',
-                    precision: 10,
-                    sourceComments: false
-                },
                 postcss: {
                     plugins: [autoprefixer({ browsers: ['last 3 versions'] })]
                 }

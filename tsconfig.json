@@ -11,7 +11,7 @@
             "es2016",
             "dom"
         ],
-        "types": []
+        "types": ["webvr-api"]
     },
     "include": [
         "./src"
