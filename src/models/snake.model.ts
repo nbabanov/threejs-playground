@@ -1,50 +1,92 @@
-import * as THREE from 'three';
+import {
+    Vector3,
+    Scene,
+    Geometry
+} from 'three';
+
 import { SnakePart } from './snake-part.model';
 
+/**
+ * Represents a snake entity
+ */
 export class Snake {
+    /**
+     * Here we hold reference to all body parts.
+     * @type {SnakePart[]}
+     */
     private body: SnakePart[] = [];
 
+    /**
+     * @param {Vector3} position - Initial position of the snake.
+     * @param {number} color - Color of the snake.
+     * @param {Vector3} currentDirection - Current direction of the snake (from input/ default).
+     * @param {Scene} scene - The scene to which the object should be added.
+     */
     constructor(
-        private position: THREE.Vector3,
+        private position: Vector3,
         private color: number,
-        private currentDirection: THREE.Vector3,
-        private scene: THREE.Scene
+        private currentDirection: Vector3,
+        private scene: Scene
     ) {
-        let head = new SnakePart(this.position, this.color);
+        const head = new SnakePart(this.position, this.color);
 
         this.scene.add(head.getMesh());
         this.body.push(head);
     }
 
+    /**
+     * When the snake eats,
+     * its tail length increases by one part.
+     */
     public eat(): void {
-        let reverseDirection: THREE.Vector3 = this.currentDirection.clone().multiplyScalar(-1);
-        let snakePart = new SnakePart(this.body[this.body.length - 1].getPosition().clone().add(reverseDirection), this.color);
+        const reverseDirection: Vector3 = this.currentDirection.clone().multiplyScalar(-1);
+        const snakePart = new SnakePart(this.body[this.body.length - 1].getPosition().clone().add(reverseDirection), this.color);
 
         this.body.push(snakePart);
         this.scene.add(snakePart.getMesh());
     }
 
-    public move(direction: THREE.Vector3): void {
+    /**
+     * Moves the snake in a given direction.
+     * @param {Vector3} direction - Initial vector representing the direction.
+     */
+    public move(direction: Vector3): void {
         this.currentDirection = direction;
 
-        for (let i = this.body.length - 1; i > 0; i--) {
+        for (const i = this.body.length - 1; i > 0; i--) {
             this.body[i].setPosition(this.body[i - 1].getPosition());
         }
 
         this.body[0].getPosition().add(direction);
     }
 
-    public getPosition(): THREE.Vector3 {
+    /**
+     * Retrieves the position of the snake,
+     * which is the one of the head part.
+     *
+     * @returns {Vector3}
+     */
+    public getPosition(): Vector3 {
         return this.body[0].getPosition();
     }
 
-    public setPosition(position: THREE.Vector3): void {
-        for (let part of this.body) {
+    /**
+     * Sets the position of the snake.
+     *
+     * @param position
+     */
+    public setPosition(position: Vector3): void {
+        for (const part of this.body) {
             part.setPosition(position);
         }
     }
 
-    public getGeometry(): THREE.Geometry {
-        return <THREE.Geometry> this.body[0].getMesh().geometry;
+    /**
+     * Retrieves the geometry object of the snake's mesh.
+     *
+     * @returns {Geometry}
+     */
+    public getGeometry(): Geometry {
+        return <Geometry> this.body[0].getMesh().geometry;
     }
 }

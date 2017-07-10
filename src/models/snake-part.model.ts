@@ -1,25 +1,56 @@
-import * as THREE from 'three';
+import {
+    Mesh,
+    BoxGeometry,
+    MeshLambertMaterial,
+    Vector3
+} from 'three';
 
+/**
+ * A cube, which represents a part of the snake.
+ */
 export class SnakePart {
-    private mesh: THREE.Mesh = null;
+    /**
+     * Here we hold reference to the 3D mesh.
+     * @type {Mesh}
+     */
+    private mesh: Mesh = null;
 
-    constructor(position: THREE.Vector3, color: number) {
-        const geometry = new THREE.BoxGeometry(1, 1, 1);
-        const material = new THREE.MeshLambertMaterial({color: color});
+    /**
+     * @param {Vector3} position - Initial position of the snake part.
+     * @param {number} color - Color of the snake part.
+     */
+    constructor(position: Vector3, color: number) {
+        const geometry = new BoxGeometry(1, 1, 1);
+        const material = new MeshLambertMaterial({ color: color });
 
-        this.mesh = new THREE.Mesh(geometry, material);
+        this.mesh = new Mesh(geometry, material);
         this.setPosition(position);
     }
 
-    public getPosition(): THREE.Vector3 {
+    /**
+     * Retrieves the part's position
+     *
+     * @returns {Vector3}
+     */
+    public getPosition(): Vector3 {
         return this.mesh.position;
     }
 
-    public setPosition(position: THREE.Vector3): void {
+    /**
+     * Sets part's position.
+     *
+     * @param {Vector3} position
+     */
+    public setPosition(position: Vector3): void {
         this.mesh.position.set(position.x, position.y, position.z);
     }
 
-    public getMesh(): THREE.Mesh {
+    /**
+     * Retrieves part's mesh.
+     *
+     * @returns {Mesh}
+     */
+    public getMesh(): Mesh {
         return this.mesh;
     }
 

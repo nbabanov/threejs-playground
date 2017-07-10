@@ -1,7 +1,14 @@
-import './styles/main.css';
-import * as THREE from 'three';
-import { Vector3 } from 'three';
+import {
+    Vector3,
+    WebGLRenderer,
+    Scene,
+    PerspectiveCamera,
+    PointLight
+} from 'three';
+
 import { Snake } from './models/snake.model';
+
+import './styles/main.css';
 
 // Set the scene size.
 const WIDTH = window.innerWidth;
@@ -12,20 +19,22 @@ const VIEW_ANGLE = 45;
 const ASPECT = WIDTH / HEIGHT;
 const NEAR = 0.1;
 const FAR = 10000;
-const BACKGROUND_COLOR = 0xf0f0f0;
+const BACKGROUND_COLOR = 0xF0F0F0;
+const SNAKE_COLOR = 0x00FF00;
+const LIGHT_COLOR = 0xFFFFFF;
 
 // Create a WebGL renderer, camera
 // and a scene
-const renderer = new THREE.WebGLRenderer();
+const renderer = new WebGLRenderer();
 const camera =
-    new THREE.PerspectiveCamera(
+    new PerspectiveCamera(
         VIEW_ANGLE,
         ASPECT,
         NEAR,
         FAR
     );
 
-const scene = new THREE.Scene();
+const scene = new Scene();
 
 // Add the camera to the scene.
 scene.add(camera);
@@ -38,16 +47,18 @@ renderer.setSize(WIDTH, HEIGHT);
 document.body.appendChild(renderer.domElement);
 
 const Orientation = {
-    UP: new THREE.Vector3(0, 1, 0),
-    DOWN: new THREE.Vector3(0, -1, 0),
-    LEFT: new THREE.Vector3(-1, 0, 0),
-    RIGHT: new THREE.Vector3(1, 0, 0)
+    UP: new Vector3(0, 1, 0),
+    DOWN: new Vector3(0, -1, 0),
+    LEFT: new Vector3(-1, 0, 0),
+    RIGHT: new Vector3(1, 0, 0)
 };
 
 
 let playerOrientation = Orientation.RIGHT;
 
-const snake = new Snake(new THREE.Vector3(0, 0, 0), 0x00ff00, playerOrientation, scene);
+const snake = new Snake(new Vector3(0, 0, 0), SNAKE_COLOR, playerOrientation, scene);
+
+// For illustrating purposes, until the food spawn mechanic is ready
 snake.eat();
 snake.eat();
 snake.eat();
@@ -58,7 +69,7 @@ camera.position.z = 15;
 camera.lookAt(snake.getPosition());
 
 // create a point light
-const pointLight = new THREE.PointLight(0xFFFFFF);
+const pointLight = new PointLight(LIGHT_COLOR);
 
 // set its position
 pointLight.position.x = 10;
@@ -70,7 +81,7 @@ scene.add(pointLight);
 
 renderer.setClearColor(BACKGROUND_COLOR);
 
-
+// Event listener for the controls
 document.addEventListener('keydown', (event) => {
     switch (event.key.toLowerCase()) {
         case 'w':
@@ -88,24 +99,25 @@ document.addEventListener('keydown', (event) => {
     }
 });
 
-
 // convert vertical fov to radians
-var vFOV = camera.fov * Math.PI / 180;
+const vFOV = camera.fov * Math.PI / 180;
 // visible height
-var frustrumHeight = Math.tan( vFOV / 2 ) * camera.position.z;
+const frustrumHeight = Math.tan(vFOV / 2) * camera.position.z;
 
-var aspect = window.innerWidth / window.innerHeight;
+
 // visible width
-var frustrumWidth = frustrumHeight * aspect;
-
+const frustrumWidth = frustrumHeight * ASPECT;
 
 
 let now = performance.now();
 let lastFrame = now;
 let deltaTime = 0;
-let snakeSpeed = 100;
+const snakeSpeed = 100;
 
-const animate = function () {
+/**
+ * Main animation loop
+ */
+function animate() {
     requestAnimationFrame(animate);
 
     now = performance.now();
@@ -130,23 +142,6 @@ const animate = function () {
 
         renderer.render(scene, camera);
     }
-
-
-};
+}
 
 animate();
-
-// Mockup for the collision
-for (var vertexIndex = 0; vertexIndex < Player.geometry.vertices.length; vertexIndex++)
-{
-    var localVertex = Player.geometry.vertices[vertexIndex].clone();
-    var globalVertex = Player.matrix.multiplyVector3(localVertex);
-    var directionVector = globalVertex.subSelf( Player.position );
-
-    var ray = new THREE.Ray( Player.position, directionVector.clone().normalize() );
-    var collisionResults = ray.intersectObjects( collidableMeshList );
-    if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() )
-    {
-        // a collision occurred... do something...
-    }
-}
