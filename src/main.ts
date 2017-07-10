@@ -145,3 +145,17 @@ function animate() {
 }
 
 animate();
+
+
+// Mockup for the collision
+for (var vertexIndex = 0; vertexIndex < Player.geometry.vertices.length; vertexIndex++) {
+    var localVertex = Player.geometry.vertices[vertexIndex].clone();
+    var globalVertex = Player.matrix.multiplyVector3(localVertex);
+    var directionVector = globalVertex.subSelf(Player.position);
+
+    var ray = new THREE.Ray(Player.position, directionVector.clone().normalize());
+    var collisionResults = ray.intersectObjects(collidableMeshList);
+    if (collisionResults.length > 0 && collisionResults[0].distance < directionVector.length()) {
+        // a collision occurred... do something...
+    }
+}
