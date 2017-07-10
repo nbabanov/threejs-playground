@@ -59,11 +59,11 @@ let playerOrientation = Orientation.RIGHT;
 const snake = new Snake(new Vector3(0, 0, 0), SNAKE_COLOR, playerOrientation, scene);
 
 // For illustrating purposes, until the food spawn mechanic is ready
-snake.eat();
-snake.eat();
-snake.eat();
-snake.eat();
-snake.eat();
+// snake.eat();
+// snake.eat();
+// snake.eat();
+// snake.eat();
+// snake.eat();
 
 camera.position.z = 15;
 camera.lookAt(snake.getPosition());
@@ -85,16 +85,24 @@ renderer.setClearColor(BACKGROUND_COLOR);
 document.addEventListener('keydown', (event) => {
     switch (event.key.toLowerCase()) {
         case 'w':
-            playerOrientation = Orientation.UP;
+            if (playerOrientation != Orientation.DOWN) {
+                playerOrientation = Orientation.UP;
+            }
             break;
         case 's':
-            playerOrientation = Orientation.DOWN;
+            if (playerOrientation != Orientation.UP) {
+                playerOrientation = Orientation.DOWN;
+            }
             break;
         case 'a':
-            playerOrientation = Orientation.LEFT;
+            if (playerOrientation != Orientation.RIGHT) {
+                playerOrientation = Orientation.LEFT;
+            }
             break;
         case 'd':
-            playerOrientation = Orientation.RIGHT;
+            if (playerOrientation != Orientation.LEFT) {
+                playerOrientation = Orientation.RIGHT;
+            }
             break;
     }
 });
@@ -129,15 +137,15 @@ function animate() {
         snake.move(playerOrientation);
 
         if (snake.getPosition().x > frustrumWidth) {
-            snake.setPosition(new Vector3(-frustrumWidth, snake.getPosition().y));
+            snake.setHeadPosition(new Vector3(-frustrumWidth, snake.getPosition().y));
         } else if (snake.getPosition().x < -frustrumWidth) {
-            snake.setPosition(new Vector3(frustrumWidth, snake.getPosition().y));
+            snake.setHeadPosition(new Vector3(frustrumWidth, snake.getPosition().y));
         }
 
         if (snake.getPosition().y > frustrumHeight) {
-            snake.setPosition(new Vector3(snake.getPosition().x, -frustrumHeight));
+            snake.setHeadPosition(new Vector3(snake.getPosition().x, -frustrumHeight));
         } else if (snake.getPosition().y < -frustrumHeight) {
-            snake.setPosition(new Vector3(snake.getPosition().x, frustrumHeight));
+            snake.setHeadPosition(new Vector3(snake.getPosition().x, frustrumHeight));
         }
 
         renderer.render(scene, camera);
@@ -148,14 +156,14 @@ animate();
 
 
 // Mockup for the collision
-for (var vertexIndex = 0; vertexIndex < Player.geometry.vertices.length; vertexIndex++) {
-    var localVertex = Player.geometry.vertices[vertexIndex].clone();
-    var globalVertex = Player.matrix.multiplyVector3(localVertex);
-    var directionVector = globalVertex.subSelf(Player.position);
-
-    var ray = new THREE.Ray(Player.position, directionVector.clone().normalize());
-    var collisionResults = ray.intersectObjects(collidableMeshList);
-    if (collisionResults.length > 0 && collisionResults[0].distance < directionVector.length()) {
-        // a collision occurred... do something...
-    }
-}
+// for (var vertexIndex = 0; vertexIndex < Player.geometry.vertices.length; vertexIndex++) {
+//     var localVertex = Player.geometry.vertices[vertexIndex].clone();
+//     var globalVertex = Player.matrix.multiplyVector3(localVertex);
+//     var directionVector = globalVertex.subSelf(Player.position);
+//
+//     var ray = new THREE.Ray(Player.position, directionVector.clone().normalize());
+//     var collisionResults = ray.intersectObjects(collidableMeshList);
+//     if (collisionResults.length > 0 && collisionResults[0].distance < directionVector.length()) {
+//         // a collision occurred... do something...
+//     }
+// }

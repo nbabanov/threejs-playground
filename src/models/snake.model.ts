@@ -47,6 +47,16 @@ export class Snake {
     }
 
     /**
+     * Sets snake's head position - used for resetting after
+     * going out of bounds.
+     *
+     * @param {Vector3} postion
+     */
+    public setHeadPosition(postion: Vector3): void {
+        this.body[0].setPosition(postion);
+    }
+
+    /**
      * Moves the snake in a given direction.
      * @param {Vector3} direction - Initial vector representing the direction.
      */
