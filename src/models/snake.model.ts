@@ -53,7 +53,7 @@ export class Snake {
     public move(direction: Vector3): void {
         this.currentDirection = direction;
 
-        for (const i = this.body.length - 1; i > 0; i--) {
+        for (let i = this.body.length - 1; i > 0; i--) {
             this.body[i].setPosition(this.body[i - 1].getPosition());
         }
 
