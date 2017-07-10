@@ -1,7 +1,7 @@
 {
   "name": "threejs-playground",
   "version": "1.0.0",
-  "description": "1. ThreeJS\r 1. TypeScript\r 1. Webpack",
+  "description": "Snake game demo",
   "main": "index.js",
   "scripts": {
     "build:dev": "cross-env NODE_ENV=development webpack --progress --watch",
@@ -16,14 +16,13 @@
     "type": "git",
     "url": "git+https://github.com/nbabanov/threejs-playground.git"
   },
-  "author": "",
+  "author": "Nikolay Babanov",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/nbabanov/threejs-playground/issues"
   },
   "homepage": "https://github.com/nbabanov/threejs-playground#readme",
   "dependencies": {
-    "http-server": "^0.10.0",
     "three": "0.86.0"
   },
   "devDependencies": {
@@ -33,10 +32,11 @@
     "base-href-webpack-plugin": "1.0.2",
     "cross-env": "5.0.0",
     "css-loader": "~0.23.1",
-    "extract-text-webpack-plugin": "^2.1.2",
+    "extract-text-webpack-plugin": "2.1.2",
     "file-loader": "0.9.0",
     "html-loader": "0.4.4",
-    "html-webpack-plugin": "^2.29.0",
+    "html-webpack-plugin": "2.29.0",
+    "http-server": "0.10.0",
     "node-sass": "4.5.3",
     "postcss-loader": "1.3.3",
     "raw-loader": "~0.5.1",
@@ -46,7 +46,7 @@
     "style-loader": "0.17.0",
     "ts-loader": "2.1.0",
     "tslint": "5.4.3",
-    "typescript": "^2.4.1",
+    "typescript": "2.4.1",
     "webpack": "2.6.0",
     "webpack-md5-hash": "0.0.5"
   }
